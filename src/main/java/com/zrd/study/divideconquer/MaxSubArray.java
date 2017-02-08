@@ -5,8 +5,8 @@ package com.zrd.study.divideconquer;
  */
 public class MaxSubArray {
     public static void main(String[] args) {
-        double[] nums = new double[]{-1.2, -2.3, 8, 1, 3, 4, 2, -2, 1,
-                15, -22, -2, -1, 1, 3, 4};
+        double[] nums = new double[]{-1.2, -2.3, 8, 1, 3, 4, 2, -22, 1,
+                151, -22, -2, -1, 1, 3, 4};
         System.out.println(getMaxSubArray(nums, 0, nums.length - 1));
     }
 
@@ -49,7 +49,7 @@ public class MaxSubArray {
         double rightMaxSum = nums[mid];
         sum = 0;
         int high = mid;
-        for(int i = mid+1; i<= right; i++){
+        for(int i = mid; i<= right; i++){
             sum += nums[i];
             if(sum > rightMaxSum){
                 high = i;
