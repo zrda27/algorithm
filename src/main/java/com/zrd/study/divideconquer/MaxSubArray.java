@@ -4,13 +4,15 @@ package com.zrd.study.divideconquer;
  * Created by zrd on 2017/2/8.
  */
 public class MaxSubArray {
+    static int c;
     public static void main(String[] args) {
         double[] nums = new double[]{-1.2, -2.3, 8, 1, 3, 4, 2, -22, 1,
-                151, -22, -2, -1, 1, 3, 4};
+                151, 1, -2, -1, 1, 3, -4};
         System.out.println(getMaxSubArray(nums, 0, nums.length - 1));
     }
 
     public static SubArray getMaxSubArray(double[] nums, int left, int right){
+        System.out.println(++c);
         if(left == right){
             return new SubArray(left, left, nums[left]);
         }
