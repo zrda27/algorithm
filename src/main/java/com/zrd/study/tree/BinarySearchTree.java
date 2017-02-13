@@ -1,6 +1,7 @@
 package com.zrd.study.tree;
 
 /**
+ * 二叉查找树
  * Created by zrd on 2017/2/12.
  */
 public class BinarySearchTree<T extends Comparable<T>> {
@@ -20,7 +21,7 @@ public class BinarySearchTree<T extends Comparable<T>> {
 
         if(node.getValue().compareTo(value) == 0){
             return;
-        }else if(node.getValue().compareTo(value) < 0){
+        }else if(node.getValue().compareTo(value) > 0){
             if(node.getLeft() == null){
                 node.setLeft(new BinaryNode<T>(value));
             }else{
@@ -36,36 +37,29 @@ public class BinarySearchTree<T extends Comparable<T>> {
     }
 
     public void remove(T value){
-        assert value != null;
-        if(root == null){
-            return;
-        }
-
-        if(root.getValue().compareTo(value) == 0){
-            if(root.getRight() != null){
-                BinaryNode<T> rightMin = findMin(root.getRight());
-
-            }
-        }else if(node.getValue().compareTo(value) < 0){
-            remove(node.getLeft(), value);
-        }else{
-            remove(node.getRight(), value);
-        }
+    	root = remove(root, value);
     }
 
-    public void remove(BinaryNode<T> node, T value){
+    public BinaryNode<T> remove(BinaryNode<T> node, T value){
         assert value != null;
         if(node == null){
-            return;
+            return null;
         }
 
         if(node.getValue().compareTo(value) == 0){
-
-        }else if(node.getValue().compareTo(value) < 0){
-            remove(node.getLeft(), value);
+        	if(node.getRight() != null && node.getLeft() != null){
+        		BinaryNode<T> minRightSubNode = findMin(node.getRight());
+        		node.setValue(minRightSubNode.getValue());
+        		node.setRight(remove(node.getRight(), minRightSubNode.getValue()));
+        	}else{
+        		node = node.getRight() == null ? node.getLeft() : node.getRight();
+        	}
+        }else if(node.getValue().compareTo(value) > 0){
+        	node.setLeft(remove(node.getLeft(), value));
         }else{
-            remove(node.getRight(), value);
+        	node.setRight(remove(node.getRight(), value));
         }
+        return node;
     }
 
     public boolean contains(T value){
@@ -84,7 +78,7 @@ public class BinarySearchTree<T extends Comparable<T>> {
 
         if(node.getValue().compareTo(value) == 0){
             return node;
-        }else if(node.getValue().compareTo(value) < 0){
+        }else if(node.getValue().compareTo(value) > 0){
             return find(node.getLeft(), value);
         }else{
             return find(node.getRight(), value);
@@ -116,15 +110,25 @@ public class BinarySearchTree<T extends Comparable<T>> {
         }
     }
 
-    public void isEmpty(){
-
+    public boolean isEmpty(){
+    	return root == null;
     }
 
     public void makeEmpty(){
-
+    	root = null;
     }
 
     public void printTree(){
-
+    	printTree(root);
+    	System.out.println("");
+    }
+    
+    private void printTree(BinaryNode<T> node){
+    	if(node == null){
+    		return;
+    	}
+    	printTree(node.getLeft());
+    	System.out.print(node.getValue() + "  ");
+    	printTree(node.getRight());
     }
 }
