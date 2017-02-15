@@ -19,19 +19,19 @@ public class BinarySearchTree<T extends Comparable<T>> {
         assert node != null;
         assert value != null;
 
-        if(node.getValue().compareTo(value) == 0){
+        if(node.data.compareTo(value) == 0){
             return;
-        }else if(node.getValue().compareTo(value) > 0){
-            if(node.getLeft() == null){
-                node.setLeft(new BinaryNode<T>(value));
+        }else if(node.data.compareTo(value) > 0){
+            if(node.left == null){
+                node.left = new BinaryNode<T>(value);
             }else{
-                this.insert(node.getLeft(), value);
+                this.insert(node.left, value);
             }
         }else{
-            if(node.getRight() == null){
-                node.setRight(new BinaryNode<T>(value));
+            if(node.right == null){
+                node.right = new BinaryNode<T>(value);
             }else{
-                this.insert(node.getRight(), value);
+                this.insert(node.right, value);
             }
         }
     }
@@ -46,18 +46,18 @@ public class BinarySearchTree<T extends Comparable<T>> {
             return null;
         }
 
-        if(node.getValue().compareTo(value) == 0){
-        	if(node.getRight() != null && node.getLeft() != null){
-        		BinaryNode<T> minRightSubNode = findMin(node.getRight());
-        		node.setValue(minRightSubNode.getValue());
-        		node.setRight(remove(node.getRight(), minRightSubNode.getValue()));
+        if(node.data.compareTo(value) == 0){
+        	if(node.right != null && node.left != null){
+        		BinaryNode<T> minRightSubNode = findMin(node.right);
+        		node.data = minRightSubNode.data;
+        		node.right = remove(node.right, minRightSubNode.data);
         	}else{
-        		node = node.getRight() == null ? node.getLeft() : node.getRight();
+        		node = node.right == null ? node.left : node.right;
         	}
-        }else if(node.getValue().compareTo(value) > 0){
-        	node.setLeft(remove(node.getLeft(), value));
+        }else if(node.data.compareTo(value) > 0){
+        	node.left = remove(node.left, value);
         }else{
-        	node.setRight(remove(node.getRight(), value));
+        	node.right = remove(node.right, value);
         }
         return node;
     }
@@ -76,12 +76,12 @@ public class BinarySearchTree<T extends Comparable<T>> {
             return null;
         }
 
-        if(node.getValue().compareTo(value) == 0){
+        if(node.data.compareTo(value) == 0){
             return node;
-        }else if(node.getValue().compareTo(value) > 0){
-            return find(node.getLeft(), value);
+        }else if(node.data.compareTo(value) > 0){
+            return find(node.left, value);
         }else{
-            return find(node.getRight(), value);
+            return find(node.right, value);
         }
 
     }
@@ -91,10 +91,10 @@ public class BinarySearchTree<T extends Comparable<T>> {
     }
 
     private BinaryNode<T> findMin(BinaryNode<T> node){
-        if(node.getLeft() == null){
+        if(node.left == null){
             return node;
         }else{
-            return findMin(node.getLeft());
+            return findMin(node.left);
         }
     }
 
@@ -103,10 +103,10 @@ public class BinarySearchTree<T extends Comparable<T>> {
     }
 
     private BinaryNode<T> findMax(BinaryNode<T> node){
-        if(node.getRight() == null){
+        if(node.right == null){
             return node;
         }else{
-            return findMax(node.getRight());
+            return findMax(node.right);
         }
     }
 
@@ -127,8 +127,22 @@ public class BinarySearchTree<T extends Comparable<T>> {
     	if(node == null){
     		return;
     	}
-    	printTree(node.getLeft());
-    	System.out.print(node.getValue() + "  ");
-    	printTree(node.getRight());
+    	printTree(node.left);
+    	System.out.print(node.data + "  ");
+    	printTree(node.right);
+    }
+
+    protected BinaryNode<T> rotateWithLeftChild(BinaryNode<T> node){
+        BinaryNode<T> tmp = node.left;
+        node.left = tmp.right;
+        tmp.right = node;
+        return tmp;
+    }
+
+    protected BinaryNode<T> rotateWithRightChild(BinaryNode<T> node){
+        BinaryNode<T> tmp = node.right;
+        node.right = tmp.left;
+        tmp.left = node;
+        return tmp;
     }
 }
